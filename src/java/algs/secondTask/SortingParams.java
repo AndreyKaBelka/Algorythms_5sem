@@ -1,11 +1,11 @@
-package com.algs.secondTask;
+package algs.secondTask;
 
 import java.util.Comparator;
 
 public class SortingParams {
     private boolean byKey = false;
     private boolean asc = true;
-    private Comparator<Integer> comparator = (o1, o2) -> 0;
+    private Comparator<Long> comparator = (o1, o2) -> 0;
 
     public SortingParams sortByKey() {
         byKey = true;
@@ -27,11 +27,11 @@ public class SortingParams {
         return this;
     }
 
-    Comparator<Integer> getComparator() {
+    Comparator<Long> getComparator() {
         if (asc) {
             comparator = Comparator.reverseOrder();
         } else {
-            comparator = Integer::compareTo;
+            comparator = Long::compareTo;
         }
         return comparator;
     }

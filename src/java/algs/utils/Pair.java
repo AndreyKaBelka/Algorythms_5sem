@@ -1,14 +1,14 @@
-package com.algs.utils;
+package algs.utils;
 
 public class Pair{
-    Integer key;
+    Long key;
     Object value;
-    public Pair(int key, Object value){
+    public Pair(long key, Object value){
         this.key = key;
         this.value = value;
     }
 
-    public Integer getKey() {
+    public Long getKey() {
         return key;
     }
 

@@ -1,4 +1,4 @@
-package com.algs;
+package algs;
 
 public class NontrivialDivisors {
 }
