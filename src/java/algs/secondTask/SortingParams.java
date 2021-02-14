@@ -1,4 +1,4 @@
-package com.algs.secondTask;
+package algs.secondTask;
 
 import java.util.Comparator;
 

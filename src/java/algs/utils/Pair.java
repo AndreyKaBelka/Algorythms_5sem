@@ -1,4 +1,4 @@
-package com.algs.utils;
+package algs.utils;
 
 public class Pair{
     Integer key;
