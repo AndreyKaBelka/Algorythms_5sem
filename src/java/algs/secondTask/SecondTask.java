@@ -4,25 +4,28 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class SecondTask {
     public static void main(String[] args) {
         //first part
-//        BinaryTree binaryTree = BinaryTree.createTree(getDataFromTerminal());
-//        List table = binaryTree.tableFromTree(new SortingParams().sortByValue().ascSorting());
-//        table.forEach(System.out::println);
+        BinaryTree binaryTree = BinaryTree.createTree(getDataFromTerminal());
+        List table = binaryTree.tableFromTree(new SortingParams().sortByValue().ascSorting());
+        table.forEach(System.out::println);
 
         //second part
-        ArrayList<Client> data = getDataFromFile("telephones.txt");
-        System.out.println(data);
+        Object[] data = getDataFromFile("telephones.txt");
+        BinaryTree tree = BinaryTree.createTree(data);
+        table =  tree.tableFromTree(new SortingParams().sortByKey().ascSorting());
+        table.forEach(System.out::println);
     }
 
-    private static ArrayList<Integer> getDataFromTerminal() {
-        ArrayList<Integer> data = new ArrayList<>();
+    private static ArrayList<Long> getDataFromTerminal() {
+        ArrayList<Long> data = new ArrayList<>();
         Scanner scanner = new Scanner(System.in);
         while (true) {
-            int num = scanner.nextInt();
+            long num = scanner.nextLong();
             if (num == 0) {
                 break;
             }
@@ -31,7 +34,7 @@ public class SecondTask {
         return data;
     }
 
-    private static ArrayList<Client> getDataFromFile(String resourceName){
+    private static Object[] getDataFromFile(String resourceName){
         ArrayList<Client> data = new ArrayList<>();
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         InputStream stream = classLoader.getResourceAsStream(resourceName);
@@ -40,6 +43,6 @@ public class SecondTask {
             data.add(Client.buildClient(clientData[3], clientData[2], clientData[1], clientData[0], Client.Plan.valueOf(clientData[4])));
         });
 
-        return data;
+        return data.toArray();
     }
 }

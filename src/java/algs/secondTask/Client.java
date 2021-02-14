@@ -13,13 +13,8 @@ public class Client {
         }
 
         @Override
-        public int hashCode() {
-            int hash = 7;
-            String allStrings = surname + name + lastname;
-            for(int i = 0; i < allStrings.length(); i++){
-                hash = hash*31 + allStrings.charAt(i);
-            }
-            return hash;
+        public String toString() {
+            return "{surname:%s, name:%s, lastname:%s}".formatted(surname, name, lastname);
         }
     }
 
@@ -41,6 +36,11 @@ public class Client {
 
         public String getDescription() {
             return description;
+        }
+
+        @Override
+        public String toString() {
+            return "{description:%s}".formatted(getDescription());
         }
     }
 
@@ -72,6 +72,11 @@ public class Client {
 
     @Override
     public int hashCode() {
-        return (phoneNumber.hashCode() + fio.hashCode() + plan.hashCode()) % Integer.MAX_VALUE;
+        return Integer.parseInt(phoneNumber.substring(2));
+    }
+
+    @Override
+    public String toString() {
+        return "{phone:%s, fio:%s, plan: %s}".formatted(phoneNumber, fio.toString(), plan.toString());
     }
 }

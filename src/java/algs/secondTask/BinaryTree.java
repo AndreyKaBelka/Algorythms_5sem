@@ -18,21 +18,21 @@ public class BinaryTree {
 
         TreeNode right = null;
         TreeNode left = null;
-        Pair pair = null;
+        Pair pair;
 
-        TreeNode(int key, Object value) {
+        TreeNode(long key, Object value) {
             pair = new Pair(key, value);
         }
 
         private static int compare(TreeNode n1, TreeNode n2) {
-            return Integer.compare(n1.pair.getKey(), n2.pair.getKey());
+            return Long.compare(n1.pair.getKey(), n2.pair.getKey());
         }
 
         private boolean greater(TreeNode node) {
             return compare(this, node) > 0;
         }
 
-        public TreeNode getDescByNodeKey(int nodeKey) {
+        public TreeNode getDescByNodeKey(long nodeKey) {
             if (this.pair.getKey() > nodeKey) return this.left;
             else return this.right;
         }
@@ -53,7 +53,7 @@ public class BinaryTree {
             }
         }
 
-        public TreeNode findNode(int nodeKey) {
+        public TreeNode findNode(long nodeKey) {
             if (this.pair.getKey() == nodeKey) return this;
             if (this.left != null && this.pair.getKey() > nodeKey) return this.left.findNode(nodeKey);
             else if (this.right != null && this.pair.getKey() < nodeKey) return this.right.findNode(nodeKey);
@@ -73,16 +73,16 @@ public class BinaryTree {
         return root;
     }
 
-    public void addNode(int nodeKey, Object nodeName) {
+    public void addNode(long nodeKey, Object nodeName) {
         TreeNode treeNode = new TreeNode(nodeKey, nodeName);
         root.addPetal(treeNode);
     }
 
-    public static BinaryTree createTree(int rootKey, Object rootName) {
+    public static BinaryTree createTree(long rootKey, Object rootName) {
         return new BinaryTree(new TreeNode(rootKey, rootName));
     }
 
-    public void deleteNode(int nodeKey) {
+    public void deleteNode(long nodeKey) {
         TreeNode parentNode = null;
         TreeNode currentNode = root;
         while (currentNode.pair.getKey() != nodeKey) {
@@ -127,37 +127,37 @@ public class BinaryTree {
         deleteNode(node.pair.getKey());
     }
 
-    public void replaceNode(int key, Object value) {
+    public void replaceNode(long key, Object value) {
         TreeNode node = this.findNode(key);
         node.pair.setValue(value);
     }
 
 
-    private void incrementValue(int num) {
+    private void incrementValue(long num) {
         TreeNode node = this.findNode(num);
-        replaceNode(num, ((int) node.pair.getValue()) + 1);
+        replaceNode(num, ((long) node.pair.getValue()) + 1L);
     }
 
-    public TreeNode findNode(int nodeKey) {
+    public TreeNode findNode(long nodeKey) {
         return root.findNode(nodeKey);
     }
 
-    public static BinaryTree createTree(ArrayList<Integer> data) {
+    public static BinaryTree createTree(ArrayList<Long> data) {
         int i = 0;
         BinaryTree binaryTree = null;
-        for (Integer datum : data) {
-            int num = datum;
+        for (Long datum : data) {
+            long num = datum;
             if (num == 0) {
                 break;
             }
             if (i == 0) {
-                binaryTree = createTree(num, 1);
+                binaryTree = createTree(num, 1L);
                 i++;
             } else {
                 try {
                     binaryTree.incrementValue(num);
                 } catch (IllegalArgumentException e) {
-                    binaryTree.addNode(num, 1);
+                    binaryTree.addNode(num, 1L);
                 }
             }
         }
@@ -185,17 +185,36 @@ public class BinaryTree {
     }
 
     private static List<Pair> sortTableByParams(List<Pair> table, SortingParams params) {
-        Comparator<Integer> orderClause = params.getComparator();
+        Comparator<Long> orderClause = params.getComparator();
 
         if (params.isByKey()) {
             table = table.stream().sorted((obj1, obj2) -> orderClause.compare(obj1.getKey(), obj2.getKey())).collect(Collectors.toList());
         } else {
-            table = table.stream().sorted((obj1, obj2) -> orderClause.compare((Integer) obj1.getValue(), ((Integer) obj2.getValue()))).collect(Collectors.toList());
+            table = table.stream().sorted(
+                    (obj1, obj2) -> orderClause.compare(
+                            (long) obj1.getValue(),
+                            (long) obj2.getValue()
+                    )
+            ).collect(Collectors.toList());
         }
         return table;
     }
 
     public List<Pair> tableFromTree(SortingParams params) {
         return BinaryTree.tableFromTree(this, params);
+    }
+
+    public static BinaryTree createTree(Object[] data){
+        boolean isFirst = true;
+        BinaryTree tree = null;
+        for (Object datum : data) {
+            if (isFirst) {
+                tree = createTree(datum.hashCode(), datum);
+                isFirst = false;
+            } else {
+                tree.addNode(datum.hashCode(), datum);
+            }
+        }
+        return tree;
     }
 }
