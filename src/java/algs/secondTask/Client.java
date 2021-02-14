@@ -1,6 +1,6 @@
 package algs.secondTask;
 
-public class Client {
+public class Client implements TreeObject {
     private static class FIO{
         String surname;
         String name;
@@ -40,7 +40,7 @@ public class Client {
 
         @Override
         public String toString() {
-            return "{description:%s}".formatted(getDescription());
+            return "{name:%s, description:%s}".formatted(this.name(), getDescription());
         }
     }
 
@@ -70,9 +70,8 @@ public class Client {
         return plan;
     }
 
-    @Override
-    public int hashCode() {
-        return Integer.parseInt(phoneNumber.substring(2));
+    public long getKey() {
+        return Long.parseLong(phoneNumber.substring(2));
     }
 
     @Override

@@ -10,14 +10,18 @@ import java.util.Scanner;
 public class SecondTask {
     public static void main(String[] args) {
         //first part
-        BinaryTree binaryTree = BinaryTree.createTree(getDataFromTerminal());
-        List table = binaryTree.tableFromTree(new SortingParams().sortByValue().ascSorting());
-        table.forEach(System.out::println);
+//        BinaryTree binaryTree = BinaryTree.createTree(getDataFromTerminal());
+//        List table = binaryTree.tableFromTree(new SortingParams().sortByValue().ascSorting());
+//        table.forEach(System.out::println);
 
-        //second part
-        Object[] data = getDataFromFile("telephones.txt");
+//        //second part
+        TreeObject[] data = getDataFromFile("telephones.txt");
         BinaryTree tree = BinaryTree.createTree(data);
-        table =  tree.tableFromTree(new SortingParams().sortByKey().ascSorting());
+        System.out.println(tree.findNode(9134608853L));
+
+        System.out.println(tree.getMostRepeatedPlan());
+
+        List table = tree.tableFromTree(new SortingParams().sortByKey().ascSorting());
         table.forEach(System.out::println);
     }
 
@@ -34,7 +38,7 @@ public class SecondTask {
         return data;
     }
 
-    private static Object[] getDataFromFile(String resourceName){
+    private static TreeObject[] getDataFromFile(String resourceName){
         ArrayList<Client> data = new ArrayList<>();
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         InputStream stream = classLoader.getResourceAsStream(resourceName);
@@ -43,6 +47,6 @@ public class SecondTask {
             data.add(Client.buildClient(clientData[3], clientData[2], clientData[1], clientData[0], Client.Plan.valueOf(clientData[4])));
         });
 
-        return data.toArray();
+        return data.toArray(TreeObject[]::new);
     }
 }

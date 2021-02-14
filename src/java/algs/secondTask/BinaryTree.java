@@ -2,9 +2,7 @@ package algs.secondTask;
 
 import algs.utils.Pair;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class BinaryTree {
@@ -166,16 +164,26 @@ public class BinaryTree {
 
     private List<Pair> buildTable() {
         List<Pair> table = new ArrayList<>();
-        traverse_tree(getRoot(), table);
+        traverse_tree(getRoot(), (petal) -> table.add(petal.pair));
         return table;
     }
 
-    private void traverse_tree(TreeNode node, List<Pair> table) {
+    private void traverse_tree(TreeNode node, Function function) {
         if (node != null) {
-            traverse_tree(node.left, table);
-            table.add(new Pair(node.pair.getKey(), node.pair.getValue()));
-            traverse_tree(node.right, table);
+            traverse_tree(node.left, function);
+            function.lambda(node);
+            traverse_tree(node.right, function);
         }
+    }
+
+    public Client.Plan getMostRepeatedPlan() {
+        HashMap<Client.Plan, Integer> table = new HashMap<>();
+        traverse_tree(getRoot(), petal -> {
+            Client.Plan plan = ((Client) petal.pair.getValue()).getPlan();
+            table.put(plan, table.getOrDefault(plan, 0) + 1);
+        });
+
+        return table.entrySet().stream().max(Comparator.comparing(Map.Entry::getValue)).get().getKey();
     }
 
     public static List<Pair> tableFromTree(BinaryTree tree, SortingParams params) {
@@ -204,17 +212,22 @@ public class BinaryTree {
         return BinaryTree.tableFromTree(this, params);
     }
 
-    public static BinaryTree createTree(Object[] data){
+    public static BinaryTree createTree(TreeObject[] data) {
         boolean isFirst = true;
         BinaryTree tree = null;
-        for (Object datum : data) {
+        for (TreeObject datum : data) {
             if (isFirst) {
-                tree = createTree(datum.hashCode(), datum);
+                tree = createTree(datum.getKey(), datum);
                 isFirst = false;
             } else {
-                tree.addNode(datum.hashCode(), datum);
+                tree.addNode(datum.getKey(), datum);
             }
         }
         return tree;
+    }
+
+    @FunctionalInterface
+    private interface Function {
+        void lambda(TreeNode petal);
     }
 }
