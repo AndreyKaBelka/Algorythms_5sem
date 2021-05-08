@@ -5,11 +5,11 @@ import java.util.List;
 import java.util.stream.Collector;
 
 public class SHA1 {
-    private static int h0 = 0x67452301;
-    private static int h1 = 0xEFCDAB89;
-    private static int h2 = 0x98BADCFE;
-    private static int h3 = 0x10325476;
-    private static int h4 = 0xC3D2E1F0;
+    private int h0 = 0x67452301;
+    private int h1 = 0xEFCDAB89;
+    private int h2 = 0x98BADCFE;
+    private int h3 = 0x10325476;
+    private int h4 = 0xC3D2E1F0;
     private static final int k1 = 0x5A827999;
     private static final int k2 = 0x6ED9EBA1;
     private static final int k3 = 0x8F1BBCDC;
@@ -32,7 +32,8 @@ public class SHA1 {
     }
 
     public static String getHash(String text) {
-        return getHash(convertToInt(text));
+        SHA1 sha1 = new SHA1();
+        return sha1.getHash(convertToInt(text));
     }
 
     public static int[] convertToInt(String word) {
@@ -47,7 +48,7 @@ public class SHA1 {
             }
         }
 
-        int[] res = new int[16];
+        int[] res = new int[16 * (binary.length() / 512 + 1)];
         Arrays.fill(res, 0);
         binary.append(1);
         while (binary.length() % 512 != 448) {
@@ -61,7 +62,7 @@ public class SHA1 {
         return res;
     }
 
-    private static String getHash(int[] bytes) {
+    private String getHash(int[] bytes) {
         for (int i = 0; ; i++) {
             int[] chunk = new int[80];
             Arrays.fill(chunk, 0);
