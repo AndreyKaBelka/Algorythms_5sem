@@ -35,7 +35,7 @@ public class MD5 {
         return Y ^ (~Z | X);
     }
 
-    static String getHash(String string) {
+    public static String getHash(String string) {
         return getHash(string.getBytes());
     }
 
@@ -75,21 +75,19 @@ public class MD5 {
                 int f = 0;
                 int bufferIndex = j;
                 switch (div16) {
-                    case 0:
-                        f = F(B, C, D);
-                        break;
-                    case 1:
+                    case 0 -> f = F(B, C, D);
+                    case 1 -> {
                         f = G(B, C, D);
                         bufferIndex = (bufferIndex * 5 + 1) & 0x0F;
-                        break;
-                    case 2:
+                    }
+                    case 2 -> {
                         f = H(B, C, D);
                         bufferIndex = (bufferIndex * 3 + 5) & 0x0F;
-                        break;
-                    case 3:
+                    }
+                    case 3 -> {
                         f = I(B, C, D);
                         bufferIndex = (bufferIndex * 7) & 0x0F;
-                        break;
+                    }
                 }
                 int temp = B + Integer.rotateLeft(A + f + state[bufferIndex] + T[j], SHIFT_AMTS[(div16 << 2) | (j & 3)]);
                 A = D;
@@ -106,22 +104,10 @@ public class MD5 {
         for (int i = 0; i < 4; i++) {
             int n = 0;
             switch (i) {
-                case 0: {
-                    n = A;
-                    break;
-                }
-                case 1: {
-                    n = B;
-                    break;
-                }
-                case 2: {
-                    n = C;
-                    break;
-                }
-                case 3: {
-                    n = D;
-                    break;
-                }
+                case 0 -> n = A;
+                case 1 -> n = B;
+                case 2 -> n = C;
+                case 3 -> n = D;
             }
             for (int j = 0; j < 4; j++) {
                 md5.append(String.format("%02X", (byte) n));
