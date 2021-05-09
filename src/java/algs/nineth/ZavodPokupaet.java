@@ -2,19 +2,18 @@ package algs.nineth;
 
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class ZavodPokupaet {
     public List<Object> toBuy(List<Integer> growthIndex) {
-        List<Object> res = Arrays.asList(Stream.of(growthIndex
+        return Collections.singletonList(Optional.of(growthIndex
                 .stream()
                 .collect(Collectors.toMap(key -> key, growthIndex::indexOf)))
-                .map(Map::values)
-                .findFirst()
                 .get()
-                .toArray());
-        Collections.reverse(res);
-        return res;
+                .entrySet()
+                .stream()
+                .sorted(Map.Entry.<Integer, Integer>comparingByKey().reversed())
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new))
+                .values());
     }
 
     public static void main(String[] args) {
