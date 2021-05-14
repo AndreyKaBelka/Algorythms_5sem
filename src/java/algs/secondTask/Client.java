@@ -14,7 +14,7 @@ public class Client implements TreeObject {
 
         @Override
         public String toString() {
-            return "{surname:%s, name:%s, lastname:%s}".formatted(surname, name, lastname);
+            return String.format("{surname:%s, name:%s, lastname:%s}", surname, name, lastname);
         }
     }
 
@@ -40,7 +40,7 @@ public class Client implements TreeObject {
 
         @Override
         public String toString() {
-            return "{name:%s, description:%s}".formatted(this.name(), getDescription());
+            return String.format("{name:%s, description:%s}", this.name(), getDescription());
         }
     }
 
@@ -76,6 +76,6 @@ public class Client implements TreeObject {
 
     @Override
     public String toString() {
-        return "{phone:%s, fio:%s, plan: %s}".formatted(phoneNumber, fio.toString(), plan.toString());
+        return String.format("{phone:%s, fio:%s, plan: %s}", phoneNumber, fio.toString(), plan.toString());
     }
 }

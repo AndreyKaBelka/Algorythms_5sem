@@ -22,6 +22,6 @@ public class Pair{
 
     @Override
     public String toString() {
-        return "{key=%s,value=%s}".formatted(key, value);
+        return String.format("{key=%s,value=%s}", key, value);
     }
 }
